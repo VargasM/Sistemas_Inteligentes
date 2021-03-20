@@ -47,12 +47,12 @@ Return:
 def exploring_distribution(data):
     age_dist_plt = plt.figure(figsize=(15,8))
     sns.displot(data.age,color='#86bf91')
-    plt.show() 
+    #plt.show() 
 
     labels=['Male','Female']
     plt.figure(figsize=(6,6))
     plt.pie(data.sex.value_counts(), labels=labels, autopct='%1.1f%%', shadow=True)
-    plt.show()
+    #plt.show()
 
 '''
 Function binding_age
@@ -70,7 +70,7 @@ def binding_age(data):
     print(df_age.head())
     plt.figure(figsize=(15,8))
     sns.countplot(x='binned',data = df_age,edgecolor=None)
-    plt.show()
+    #plt.show()
     print(df_age.binned.value_counts())
 
 '''
@@ -167,10 +167,10 @@ def exang(data):
   
 def run_analysis():
     data = load_data()
-    exploring_distribution(data)
-    binding_age(data)
+    #exploring_distribution(data)
+    #binding_age(data)
     df=split_age_category(data)
-    heart_rate(df)
+    #heart_rate(df)
     df_trestbps = blood_pressure(data)
-    exang(df_trestbps)
+    #exang(df_trestbps)
     return df_trestbps

@@ -1,4 +1,4 @@
-mport numpy as np # linear algebra
+import numpy as np # linear algebra
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.ensemble import RandomForestClassifier
