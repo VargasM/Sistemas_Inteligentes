@@ -7,6 +7,10 @@ import seaborn as sns
 from utils import *
 from data_analysis import *
 import pandas as pd 
+from tensorflow import keras
+from tensorflow.python.keras.layers import Input, Dense, Dropout, Activation
+from keras.optimizers import RMSprop
+import tensorflow as tf
 # Input data files are available in the "../input/" directory.
 # For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory
 
@@ -57,10 +61,33 @@ def split_data(df_transformed):
     
     #Split the data 
     X_train, X_test, y_train, y_test = train_test_split(df_transformed.drop('condition',axis=1), df_transformed['condition'], test_size = .2, random_state=10)
-    rf_model = RandomForestClassifier(max_depth=5, random_state=137)
-    rf_model.fit(X_train, y_train)
+    model = keras.Sequential()
+    model.add(Dense(64, input_shape=[len(X_train.keys())] ))
+    model.add(Activation('relu'))
+    model.add(Dropout(0.5,seed=10))
+    model.add(Dense(256,kernel_regularizer=l2(0.01),kernel_initializer = 'random_uniform'))
+    model.add(Activation('relu'))
+    model.add(Dense(1, activation='sigmoid'))
+    rms = RMSprop()
+    optimizer = tf.keras.optimizers.RMSprop(0.001)
+    model.compile(loss='mse',
+                optimizer=optimizer,
+                metrics=['mae', 'mse'])
+    
+    # The patience parameter is the amount of epochs to check for improvement
 
+    early_stop = keras.callbacks.EarlyStopping(monitor='val_loss', patience=10)
+    #model.compile(optimizer="adam",loss="binary_crossentropy",metrics=["accuracy"])
+    model.fit(x = X_train, y = y_train, epochs = 100, batch_size = 16, validation_split=0.2, callbacks=[early_stop])
+
+    
+    loss, mae, mse = model.evaluate(X_train, y_train, verbose=2)
+    print('Test mae:', mae)
+    print('Test loss:', loss)
+    print('Test mse:', mse)
+    return {'loss': loss, 'status': STATUS_OK, 'model': model}
+    
 if __name__ == '__main__':
     df = run_analysis()
-    df_transformed = cat_numer(df)
-    split_data(df_transformed)
+    #df_transformed = cat_numer(df)
+    split_data(df)
