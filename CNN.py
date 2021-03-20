@@ -1,9 +1,4 @@
-
-# This Python 3 environment comes with many helpful analytics libraries installed
-# It is defined by the kaggle/python docker image: https://github.com/kaggle/docker-python
-# For example, here's several helpful packages to load in 
-
-import numpy as np # linear algebra
+mport numpy as np # linear algebra
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.ensemble import RandomForestClassifier
@@ -30,17 +25,19 @@ Return:
     DataSet transformed df_transformed
 ''' 
 def cat_numer(data):
+    print(data.head())
     y = data.condition
     df_transformed = data.copy(deep=True)
-    numeric_features = ['age','trestbps','chol','thalach','ca','oldpeak']
+    numeric_features = ['age','trestbps','chol','thalach','ca']
     categorical_features = ['sex','cp','fbs','restecg','exang','slope','thal']
 
     enc = OneHotEncoder(sparse=False,drop='first')
     enc.fit(df_transformed[categorical_features])
-
+    
     col_names = enc.get_feature_names(categorical_features)
+    print(col_names)
     df_transformed = pd.concat([df_transformed.drop(categorical_features, 1),
-    pd.DataFrame(enc.transform(df_transformed[categorical_features]),columns = col_names)], axis=1).reindex()
+          pd.DataFrame(enc.transform(df_transformed[categorical_features]),columns = col_names)], axis=1).reindex()
     print(df_transformed.head())
 
     #Categorical are on onehotencoder

@@ -56,7 +56,7 @@ def exploring_distribution(data):
 
 '''
 Function binding_age
-    This function is binfing the age data to see how aging afect heart disease
+    This function is binding the age data to see how aging afect heart disease
 Parameters:
     Data: Dataset
 Return:
