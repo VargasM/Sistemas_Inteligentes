@@ -85,7 +85,6 @@ def split_data(df_transformed):
     print('Test mae:', mae)
     print('Test loss:', loss)
     print('Test mse:', mse)
-    return {'loss': loss, 'status': STATUS_OK, 'model': model}
     
 if __name__ == '__main__':
     df = run_analysis()
